@@ -7,7 +7,7 @@ let MachineSchema = new mongoose.Schema(
       required: [true, "Please add Name"],
     },
     url: {
-      type: String,
+      type: Array,
       required: true,
     },
     description: {
