@@ -22,7 +22,7 @@ module.exports.createmachine=  async function(req,res){
 }
 
 module.exports.getAllMachines= async function(req,res){
-    console.log("hiiiii")
+    // console.log("hiiiii")
     try {
         let allMachines= await Machine.find({})
 
