@@ -4,7 +4,9 @@ const jwt=require("jsonwebtoken");
 module.exports.register= async function(req,res){
 
     try {
-        let user=await User.create(req.body);
+        console.log("register",req.body)
+        const user=await User.create(req.body.values);
+        console.log("register",req.body)
         return res.status(200).json({
             message:"user registered successfully",
             data:user
@@ -21,12 +23,13 @@ module.exports.register= async function(req,res){
 }
 module.exports.login=async function(req,res){
     try {
-        let user = await User.findOne({ email: req.body.email });
+        const user = await User.findOne({ email: req.body.email });
+        // const user1 = await User.find();
         console.log("user found", user);
-        const password = req.body.password;
+        // const password = req.body.password;
         // Check if password matches
-        const isMatch = await user.matchPassword(password);
-        if (!isMatch) {
+        // const isMatch = await user.matchPassword(password);
+        if (!user || user.password != req.body.password) {
           console.log('Didnt match')
           // return next(new ErrorResponse("Password is invalid ", 401));
           return res.status(400).json({
