@@ -31,7 +31,6 @@ const UserSchema = new mongoose.Schema(
       enum: ["admin", "instructor", "student"],
       default: "student",
     },
-   
   },
   {
     timestamps: true,
@@ -49,10 +48,12 @@ UserSchema.methods.matchPassword = async function (enteredPassword) {
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
+    console.log("File fetched", file);
     cb(null, path.join(__dirname, "..", AVATAR_PATH));
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    console.log("file/file", file);
     cb(null, "avatar" + "-" + uniqueSuffix);
   },
 });
