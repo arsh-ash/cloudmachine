@@ -17,7 +17,7 @@ module.exports.editUser = async function (req, res) {
     user.firstName = req.body.firstName;
     user.lastName = req.body.lastName;
     console.log("req.body", req.body);
-    console.log("file namee req.file", req.file.filename);
+    // console.log("file namee req.file", req.file.filename);
     if (req.file) {
       if (user.avatar) {
         fs.unlinkSync(path.join(__dirname, "..", user.avatar));
