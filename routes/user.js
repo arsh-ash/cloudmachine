@@ -1,13 +1,13 @@
-const express = require("express");
-const router = express.Router();
+const express=require("express");
+const router=express.Router();
 const passport = require("passport");
 
-const userController = require("../controllers/user_controller");
 
-router.put(
-  "/updateUser",
-  passport.authenticate("jwt", { session: false }),
-  userController.editUser
-);
+const userController=require("../controllers/user_controller");
 
-module.exports = router;
+router.put("/updateUser" ,
+passport.authenticate("jwt", { session: false }),
+userController.editUser
+)
+
+module.exports=router;

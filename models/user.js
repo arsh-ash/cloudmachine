@@ -24,6 +24,7 @@ const UserSchema = new mongoose.Schema(
     },
     password: {
       type: String,
+      select: false,
       required: true,
       select:false
     },
@@ -38,10 +39,13 @@ const UserSchema = new mongoose.Schema(
   }
 );
 UserSchema.pre("save", async function (next) {
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+  if (this.password) {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+  }
 });
 UserSchema.methods.matchPassword = async function (enteredPassword) {
+  console.log("this password", this.password);
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
@@ -53,7 +57,7 @@ const storage = multer.diskStorage({
     cb(null, path.join(__dirname, "..", AVATAR_PATH));
   },
   filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9)+'.jpg';
     console.log("file/file", file);
     cb(null, "avatar" + "-" + uniqueSuffix);
   },
