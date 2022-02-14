@@ -12,12 +12,12 @@ module.exports.editUser = async function (req, res) {
     if (err) {
       console.log("multerError");
     }
-    console.log("avatar", req.body.avatar);
-    console.log("firstName", user.firstName);
+     console.log("avatar", req.file);
+    // console.log("firstName", user.firstName);
     user.firstName = req.body.firstName;
     user.lastName = req.body.lastName;
     console.log("req.body", req.body);
-    console.log("file namee req.file", req.file.filename);
+    //  console.log("file namee req.file", req.file.filename);
     if (req.file) {
       if (user.avatar) {
         fs.unlinkSync(path.join(__dirname, "..", user.avatar));
@@ -25,8 +25,9 @@ module.exports.editUser = async function (req, res) {
       // user.avatar = User.avatarPath + "/" + req.file + ".jpg";
       user.avatar = User.avatarPath + "/" + req.file.filename;
     }
-    console.log("avatar", user.avatar);
+    // console.log("avatar", user.avatar);
     user.save();
+    console.log("updated user",user);
   });
  
   return res.status(200).json({
@@ -38,6 +39,10 @@ module.exports.editUser = async function (req, res) {
   });
 };
 
+// modeule.exports.getCurentUser=function(req,res){
+    
+
+// }
 // try {
 //   console.log(req.params.id);
 //   let user = await User.findById(req.params.id);
