@@ -28,9 +28,9 @@ module.exports.login = async function (req, res) {
       });
     }
     // const user1 = await User.find();
-    console.log("user found", user);
+    // console.log("user found", user);
     const password = req.body.password;
-    console.log("password", password);
+    // console.log("password", password);
     // Check if password matches
     const isMatch = await user.matchPassword(password);
 
