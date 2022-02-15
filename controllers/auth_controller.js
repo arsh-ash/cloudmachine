@@ -5,14 +5,15 @@ module.exports.register = async function (req, res) {
   try {
     console.log("register", req.body);
     // formic ka use kro to req.body.values ata hai
-    const user = await User.create(req.body.values);
+    const user = await User.create(req.body);
     console.log("register", req.body);
     return res.status(200).json({
       message: "user registered successfully",
       data: user,
     });
   } catch (error) {
-    return res.status(200).json({
+    console.log('cant create',error)
+    return res.status(500).json({
       message: "internal server error",
     });
   }
