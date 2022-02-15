@@ -9,5 +9,6 @@ router.put("/updateUser" ,
 passport.authenticate("jwt", { session: false }),
 userController.editUser
 )
+router.post("/getCurrentUser/:id",userController.getCurentUser);
 
 module.exports=router;

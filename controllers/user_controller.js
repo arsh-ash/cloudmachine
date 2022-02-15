@@ -3,12 +3,12 @@ const fs = require("fs");
 const path = require("path");
 const jwt = require("jsonwebtoken");
 
-const { findOne } = require("../models/user");
+const { findOne, findById } = require("../models/user");
 
-module.exports.editUser = async function (req, res) {
+module.exports.editUser = async function (req, res){
   user = await User.findById(req.user._id);
   console.log("user found", user);
-  User.uploadedAvatar(req, res, function (err) {
+  User.uploadedAvatar(req, res, function (err){
     if (err) {
       console.log("multerError");
     }
@@ -27,7 +27,6 @@ module.exports.editUser = async function (req, res) {
     }
     // console.log("avatar", user.avatar);
     user.save();
-    console.log("updated user",user);
   });
  
   return res.status(200).json({
@@ -39,10 +38,21 @@ module.exports.editUser = async function (req, res) {
   });
 };
 
-// modeule.exports.getCurentUser=function(req,res){
+module.exports.getCurentUser= async function(req,res){
+
+   let user= await User.findById(req.params.id);``
+   if(!user){
+       return res.status(200).json({
+           message:"no such user found"
+       })
+   }
+   return res.status(200).json({
+       message:"user found successfully",
+       data:user
+   })
     
 
-// }
+}
 // try {
 //   console.log(req.params.id);
 //   let user = await User.findById(req.params.id);
