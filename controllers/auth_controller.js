@@ -21,7 +21,7 @@ module.exports.register = async function (req, res) {
 module.exports.login = async function (req, res) {
   try {
     //imp 
-    const user = await User.findOne({ email: req.body.email }).select("+password");
+    const user = await User.findOne({ email: req.body.email })
     if (!user) {
       console.log("No user");
       return res.status(400).json({
