@@ -21,17 +21,18 @@ module.exports.register = async function (req, res) {
 module.exports.login = async function (req, res) {
   try {
     //imp 
-    const user = await User.findOne({ email: req.body.email })
+    const user = await User.findOne({ email: req.body.email }).select("+password")
     if (!user) {
       console.log("No user");
       return res.status(400).json({
         message: "User not found",
       });
     }
+    console.log('user found',user)
     // const user1 = await User.find();
     // console.log("user found", user);
     const password = req.body.password;
-    // console.log("password", password);
+    console.log("password", password);
     // Check if password matches
     const isMatch = await user.matchPassword(password);
 
