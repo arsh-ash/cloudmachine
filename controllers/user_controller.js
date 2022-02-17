@@ -5,10 +5,10 @@ const jwt = require("jsonwebtoken");
 
 const { findOne, findById } = require("../models/user");
 
-module.exports.editUser = async function (req, res){
+module.exports.editUser = async function (req, res) {
   user = await User.findById(req.user._id);
-//   console.log("user found", user);
-  User.uploadedAvatar(req, res, function (err){
+  //   console.log("user found", user);
+  User.uploadedAvatar(req, res, function (err) {
     if (err) {
       console.log("multerError");
     }
@@ -27,30 +27,29 @@ module.exports.editUser = async function (req, res){
     }
     // console.log("avatar", user.avatar);
     user.save();
-    
   });
- 
+
   return res.status(200).json({
     message: "user updated succesfully",
     data: {
+      success: true,
       token: jwt.sign(user.toJSON(), "Cloud", { expiresIn: "100000000" }),
       user,
     },
   });
 };
 
-module.exports.getCurentUser= async function(req,res){
-
-   let user= await User.findById(req.params.id);
-   if(!user){
-       return res.status(200).json({
-           message:"no such user found"
-       })
-   }
-   return res.status(200).json({
-       message:"user found successfully",
-       data:user
-   })
-    
-
-}
+module.exports.getCurentUser = async function (req, res) {
+  let user = await User.findById(req.params.id);
+  if (!user) {
+    return res.status(200).json({
+      message: "no such user found",
+      success: false,
+    });
+  }
+  return res.status(200).json({
+    message: "user found successfully",
+    data: user,
+    success: true,
+  });
+};
