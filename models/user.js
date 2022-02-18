@@ -17,7 +17,17 @@ const UserSchema = new mongoose.Schema(
     avatar: {
       type: String,
     },
+
     email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    dob: {
+      type: String,
+      required: true,
+    },
+    contact: {
       type: String,
       required: true,
       unique: true,
@@ -56,7 +66,8 @@ const storage = multer.diskStorage({
     cb(null, path.join(__dirname, "..", AVATAR_PATH));
   },
   filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9)+'.jpg';
+    const uniqueSuffix =
+      Date.now() + "-" + Math.round(Math.random() * 1e9) + ".jpg";
     console.log("file/file", file);
     cb(null, "avatar" + "-" + uniqueSuffix);
   },
