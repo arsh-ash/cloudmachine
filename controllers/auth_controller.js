@@ -48,6 +48,9 @@ module.exports.login = async function (req, res) {
       message: "Sign in successful, here is your token",
       data: {
         token: jwt.sign(user.toJSON(), "Cloud", { expiresIn: "100000000" }),
+        success:true,
+        user:user,
+
       },
     });
   } catch (err) {
