@@ -23,6 +23,12 @@ let StepSchema = new mongoose.Schema({
   options: {
     type: Array,
   },
+  // optionsAns: {
+  //   type: Array,
+  // },
+  optionsAns: {
+    type: String,
+  },
 });
 
 const Steps = mongoose.model("Steps", StepSchema);
