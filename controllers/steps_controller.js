@@ -94,6 +94,7 @@ exports.checkAns = async (req, res, next) => {
     console.log("Request Answer", req.body.answer);
     if (!req.body.answer || req.body.answer === "") {
       res.status(400).json({
+        success: false,
         message: "Please provide answers",
       });
     } else {
@@ -103,6 +104,7 @@ exports.checkAns = async (req, res, next) => {
         .sort()
         .join(",");
       res.status(200).json({
+        success: true,
         data: steps.optionsAns === req.body.answer,
         message: "Correct Answer",
       });
@@ -114,12 +116,20 @@ exports.checkAns = async (req, res, next) => {
     if (!req.body.answer || req.body.answer === "") {
       res.status(400).json({
         message: "Please provide some answer",
+        success: false,
       });
     } else {
       steps.answer = steps.answer.toLowerCase().split(" ").join("");
       req.body.answer = req.body.answer.toLowerCase().split(" ").join("");
-      res.status(200).json({
-        data: steps.answer === req.body.answer,
+      if (steps.answer === req.body.answer) {
+        res.status(200).json({
+          success: true,
+          message: "Step completed",
+        });
+      }
+      res.status(400).json({
+        success: false,
+        message: "Incorrect Answer",
       });
     }
   }
