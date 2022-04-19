@@ -1,21 +1,31 @@
+const { request } = require("express");
 const Steps = require("../models/steps");
 
 // Create Steps
 module.exports.createsteps = async function (req, res) {
   try {
-    req.body.machine = req.params.machineId;
+    req.body.Machine = req.params.machineId;
     /////////// create array option
     ///// options[{option1,option2,option3,option4}]
     // optionsAns = kdg,dytf,tryrt,rtyt
-   
-    let temp_options = req.body.options[0];
-    // let temp_optionsAns = req.body.optionsAns.split(',');
-    req.body.options = [temp_options.option1,temp_options.option2,temp_options.option3,temp_options.option4]
-    // req.body.optionsAns = temp_optionsAns
 
-    
+    if (req.body.options) {
+      let temp_options = req.body.options;
+      // let temp_optionsAns = req.body.optionsAns.split(',');
+      req.body.options = [
+        { a: temp_options.a },
+        { b: temp_options.b },
+        { c: temp_options.c },
+        { d: temp_options.d },
+      ];
+    }
+
+    // req.body.optionsAns = temp_optionsAns
+    console.log("req body", req.body);
+    console.log("Machine Id", req.body);
 
     let steps = await Steps.create(req.body);
+    console.log("Step created", steps);
     return res.status(200).json({
       message: "Steps created successfully",
       data: steps,
@@ -35,10 +45,18 @@ module.exports.createsteps = async function (req, res) {
 //@access  Public
 
 exports.getSteps = async (req, res, next) => {
-  const steps = await Steps.find({ machine: req.params.machineId }).populate({
+  console.log("params Id", req.params.machineId);
+  const steps = await Steps.find({
+    Machine: req.params.machineId,
+  }).populate({
     path: "Machine",
     select: "name description",
   });
+  // const steps = await Steps.findById(req.params.machineId).populate({
+  //   path: "Machine",
+  //   select: "name description",
+  // });
+  console.log("steps", steps);
 
   if (!steps) {
     return next(
@@ -54,34 +72,55 @@ exports.getSteps = async (req, res, next) => {
 };
 
 ///////////-------
-//////// isMCQ = true,stepId, ans , req.body 
+//////// isMCQ = true,stepId, ans , req.body
 
 exports.checkAns = async (req, res, next) => {
-  const steps = await Steps.find({ machine: req.body.stepId })
+  const steps = await Steps.findById(req.params.stepId).select("+answer");
+
+  const isMCQ = req.body.isMcq;
+  //   if(isMCQ){
+  // if (!steps.optionsAns){
+
+  // }
 
   if (!steps) {
-    return next(
-      new ErrorResponse(`No steps with id of ${req.params.machineId}`),
-      404
-    );
+    return next(new ErrorResponse(`No steps with id}`), 404);
   }
 
-  if(isMCQ){
-     
-    res.status(200).json({
-      data: steps.optionsAns === req.body.ans,
-    });
+  if (isMCQ) {
+    console.log("unTrimmed", steps.optionsAns);
 
-
+    console.log("Converted String");
+    console.log("Request Answer", req.body.answer);
+    if (!req.body.answer || req.body.answer === "") {
+      res.status(400).json({
+        message: "Please provide answers",
+      });
+    } else {
+      steps.optionsAns = steps.optionsAns
+        .toLowerCase()
+        .split(",")
+        .sort()
+        .join(",");
+      res.status(200).json({
+        data: steps.optionsAns === req.body.answer,
+        message: "Correct Answer",
+      });
+    }
   }
-  if(!isMCQ){
-    res.status(200).json({
-      data: steps.answer === req.body.ans,
-    });
-
-
+  if (!isMCQ) {
+    console.log("Current Step", steps);
+    console.log("Request Body", req.body);
+    if (!req.body.answer || req.body.answer === "") {
+      res.status(400).json({
+        message: "Please provide some answer",
+      });
+    } else {
+      steps.answer = steps.answer.toLowerCase().split(" ").join("");
+      req.body.answer = req.body.answer.toLowerCase().split(" ").join("");
+      res.status(200).json({
+        data: steps.answer === req.body.answer,
+      });
+    }
   }
 };
-
- 
-
