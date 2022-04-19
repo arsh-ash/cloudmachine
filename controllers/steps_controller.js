@@ -103,11 +103,16 @@ exports.checkAns = async (req, res, next) => {
         .split(",")
         .sort()
         .join(",");
-      res.status(200).json({
-        success: true,
-        data: steps.optionsAns === req.body.answer,
-        message: "Correct Answer",
-      });
+      if (steps.optionsAns === req.body.answer) {
+        res.status(200).json({
+          success: true,
+          message: "Correct Answer",
+        });
+      } else
+        res.status(400).json({
+          success: false,
+          message: "Incorrect Answer",
+        });
     }
   }
   if (!isMCQ) {
