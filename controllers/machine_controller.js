@@ -21,7 +21,7 @@ module.exports.getAllMachines = async function (req, res) {
   // console.log("hiiiii")
   try {
     let allMachines = await Machine.find({}).populate({ path: "Steps" });
-    console.log("All machines", allMachines);
+
     return res.status(200).json({
       message: "all machines fatched",
       success: true,
@@ -52,7 +52,7 @@ module.exports.getSinglelMachine = async function (req, res) {
       message: error,
       success: false,
     });
-    console.log("internal serever error", error);
+
   }
 };
 module.exports.deleteMachines = async function (req, res) {
