@@ -2,7 +2,7 @@ const express=require("express");
 const cors = require('cors');
 
 const app=express();
-const port=8000;
+const port=9000;
 const connectDB=require('./config/database')
 const passport=require("passport");
 const passportJwt=require("./config/passport-jwt-strategy");
