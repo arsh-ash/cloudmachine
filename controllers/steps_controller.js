@@ -108,11 +108,12 @@ exports.checkAns = async (req, res, next) => {
           success: true,
           message: "Correct Answer",
         });
-      } else
+      } else {
         res.status(400).json({
           success: false,
           message: "Incorrect Answer",
         });
+      }
     }
   }
   if (!isMCQ) {
@@ -131,11 +132,12 @@ exports.checkAns = async (req, res, next) => {
           success: true,
           message: "Step completed",
         });
+      } else {
+        res.status(400).json({
+          success: false,
+          message: "Incorrect Answer",
+        });
       }
-      res.status(400).json({
-        success: false,
-        message: "Incorrect Answer",
-      });
     }
   }
 };
