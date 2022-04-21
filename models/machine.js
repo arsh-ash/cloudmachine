@@ -5,6 +5,7 @@ let MachineSchema = new mongoose.Schema(
     machineName: {
       type: String,
       required: [true, "Please add Name"],
+      unique: true,
     },
     url: {
       type: Array,
@@ -13,9 +14,9 @@ let MachineSchema = new mongoose.Schema(
     description: {
       type: String,
     },
-    steps: {
-      type: Array,
-      required: true,
+    Steps: {
+      type: mongoose.Schema.ObjectId,
+      ref: "Steps",
     },
   },
   {
@@ -27,7 +28,7 @@ const Machine = mongoose.model("Machine", MachineSchema);
 module.exports = Machine;
 
 // const mongoose =require("mongoose");
- 
+
 // let MachineSchema=new mongoose.Schema({
 //     machineName:{
 //         type:String,
@@ -41,9 +42,9 @@ module.exports = Machine;
 //         type:String
 
 //     },
-    
+
 // },{
-//  timestamps:true,   
+//  timestamps:true,
 // })
 
 // const Machine=mongoose.model("Machine",MachineSchema);

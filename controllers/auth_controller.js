@@ -12,7 +12,7 @@ module.exports.register = async function (req, res) {
       data: user,
     });
   } catch (error) {
-    console.log('cant create',error)
+    console.log("cant create", error);
     return res.status(500).json({
       message: "internal server error",
     });
@@ -20,15 +20,17 @@ module.exports.register = async function (req, res) {
 };
 module.exports.login = async function (req, res) {
   try {
-    //imp 
-    const user = await User.findOne({ email: req.body.email }).select("+password")
+    //imp
+    const user = await User.findOne({ email: req.body.email }).select(
+      "+password"
+    );
     if (!user) {
       console.log("No user");
-      return res.status(400).json({
+      return res.status(404).json({
         message: "User not found",
       });
     }
-    console.log('user found',user)
+    console.log("user found", user);
     // const user1 = await User.find();
     // console.log("user found", user);
     const password = req.body.password;
@@ -39,19 +41,15 @@ module.exports.login = async function (req, res) {
     if (!isMatch) {
       console.log("Didnt match");
       // return next(new ErrorResponse("Password is invalid ", 401));
-      return res.status(400).json({
+      return res.status(404).json({
         message: "Invalid password",
       });
     }
 
     return res.status(200).json({
+      success: true,
       message: "Sign in successful, here is your token",
-      data: {
-        token: jwt.sign(user.toJSON(), "Cloud", { expiresIn: "100000000" }),
-        success:true,
-        user:user,
-
-      },
+      token: jwt.sign(user.toJSON(), "Cloud", { expiresIn: "100000000" }),
     });
   } catch (err) {
     console.log("server Error", err);
