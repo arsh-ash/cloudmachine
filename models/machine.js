@@ -11,6 +11,10 @@ let MachineSchema = new mongoose.Schema(
       type: Array,
       required: true,
     },
+    extLink: {
+      type: Array,
+      required: true,
+    },
     description: {
       type: String,
     },

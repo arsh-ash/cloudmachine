@@ -52,19 +52,18 @@ module.exports.getSinglelMachine = async function (req, res) {
       message: error,
       success: false,
     });
-
   }
 };
 module.exports.deleteMachines = async function (req, res) {
   try {
     await Machine.findByIdAndDelete(req.params.id);
     return res.status(200).json({
-      message: "message deleted sucessfully",
+      message: "Machine deleted sucessfully",
       success: true,
     });
   } catch (err) {
     return res.status(404).json({
-      message: error,
+      message: err,
       success: false,
     });
   }
