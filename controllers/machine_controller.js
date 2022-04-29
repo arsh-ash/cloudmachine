@@ -1,4 +1,5 @@
 const Machine = require("../models/machine");
+const Steps=require("../models/steps")
 
 module.exports.createmachine = async function (req, res) {
   try {
@@ -55,8 +56,13 @@ module.exports.getSinglelMachine = async function (req, res) {
   }
 };
 module.exports.deleteMachines = async function (req, res) {
+  console.log("tryimg to delete something",req.params.id)
+  
   try {
     await Machine.findByIdAndDelete(req.params.id);
+    await Steps.deleteMany({Machine:req.params.id});
+
+
     return res.status(200).json({
       message: "Machine deleted sucessfully",
       success: true,
