@@ -8,6 +8,10 @@ router.get(
   "/getSinglelMachine/:machineId",
   machineController.getSinglelMachine
 );
+router.put(
+  "/editMachine/:machineId",
+  machineController.editMachine
+);
 router.delete("/deleteMachine/:id", machineController.deleteMachines);
 
 module.exports = router;

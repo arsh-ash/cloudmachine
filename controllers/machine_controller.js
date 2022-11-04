@@ -1,5 +1,5 @@
 const Machine = require("../models/machine");
-const Steps=require("../models/steps")
+const Steps = require("../models/steps")
 
 module.exports.createmachine = async function (req, res) {
   try {
@@ -36,6 +36,26 @@ module.exports.getAllMachines = async function (req, res) {
     });
   }
 };
+module.exports.editMachine = async function (req, res) {
+  // console.log("hiiiii")
+  console.log('machine body', req.body)
+  try {
+    let machine = await Machine.findByIdAndUpdate(req.params.machineId, { ...req.body });
+    // Machine.save();
+    console.log(machine)
+    return res.status(200).json({
+      message: "Machine Updated successfully",
+      success: true,
+      data: req.body,
+    });
+  } catch (error) {
+    console.log(error)
+    return res.status(404).json({
+      message: 'Machine cannot be updated',
+      success: false,
+    });
+  }
+};
 module.exports.getSinglelMachine = async function (req, res) {
   // console.log("hiiiii")
   try {
@@ -56,11 +76,11 @@ module.exports.getSinglelMachine = async function (req, res) {
   }
 };
 module.exports.deleteMachines = async function (req, res) {
-  console.log("tryimg to delete something",req.params.id)
-  
+  console.log("tryimg to delete something", req.params.id)
+
   try {
     await Machine.findByIdAndDelete(req.params.id);
-    await Steps.deleteMany({Machine:req.params.id});
+    await Steps.deleteMany({ Machine: req.params.id });
 
 
     return res.status(200).json({
