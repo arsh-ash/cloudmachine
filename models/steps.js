@@ -20,6 +20,11 @@ let StepSchema = new mongoose.Schema({
     type: String,
     select: false,
   },
+  answerType: {
+    type: String,
+    enum: ["mcq", "sentence"],
+    default: "sentence",
+  },
   options: {
     type: Array,
   },

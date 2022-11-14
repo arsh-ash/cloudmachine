@@ -82,7 +82,6 @@ module.exports.deleteMachines = async function (req, res) {
     await Machine.findByIdAndDelete(req.params.id);
     await Steps.deleteMany({ Machine: req.params.id });
 
-
     return res.status(200).json({
       message: "Machine deleted sucessfully",
       success: true,

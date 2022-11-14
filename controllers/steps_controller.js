@@ -1,5 +1,6 @@
 const { request } = require("express");
 const Steps = require("../models/steps");
+// const Machine = require("../models/machine");
 
 // Create Steps
 module.exports.createsteps = async function (req, res) {
@@ -40,18 +41,91 @@ module.exports.createsteps = async function (req, res) {
   }
 };
 
+//@desc    edit individual machine steps
+//@route   PUT /machine/edit-step/:stepId
+//@access  Public
+module.exports.editStep = async (req, res, next) => {
+
+  // console.log('Resquested Body', req.body);
+
+  try {
+
+    if (req.body.stepsTobeDeleted.length > 0) {
+      console.log('To be deleted')
+      req.body.stepsTobeDeleted.map(async (steptoBeDeleted) => {
+        console.log('tobe deleted id', steptoBeDeleted)
+        if (steptoBeDeleted) {
+          const response = await Steps.findByIdAndDelete(steptoBeDeleted)
+          console.log('Step delete response', response)
+        }
+
+        
+      })
+      // const deletedSteps=
+    }
+    // if(!Steps.includes())
+    let step2 = req.body.data.map(async (individualStep) => {
+      if (individualStep.answerType === 'sentence' && individualStep.options.length > 0) {
+        individualStep.options = [
+          { a: '' },
+          { b: '' },
+          { c: '' },
+          { d: '' },
+        ]
+      }
+
+      individualStep._id ? await Steps.findByIdAndUpdate(individualStep._id, individualStep).then((response) => console.log('Machine UPdated', response)) : (
+        individualStep.Machine = req.params.machineId,
+        await Steps.create(individualStep)
+      )
+
+
+    })
+    console.log('Steps updated', step2)
+    return res.status(200).json({
+      message: 'Steps Updated successfully',
+      success: true,
+      data: req.body
+    });
+  } catch (err) {
+    console.log('Error', err)
+    if (err.name === "ValidationError") {
+      let errors = {};
+
+      Object.keys(err.errors).forEach((key) => {
+        errors[key] = err.errors[key].message;
+      });
+
+      return res.status(400).send(errors);
+    }
+  }
+  const stepsFteched = [];
+
+
+}
+
 //@desc    Get individual machine steps
 //@route   GET /machine/steps/:stepId
-//@access  Public
+//@access  Private
 
 exports.getSteps = async (req, res, next) => {
-  console.log("params Id", req.params.machineId);
-  const steps = await Steps.find({
+  console.log("req user", req.user);
+  let steps = '';
+  (req.user.role === 'admin') ? steps = await Steps.find({
     Machine: req.params.machineId,
-  }).populate({
+  }).select('+answer').populate({
     path: "Machine",
     select: "name description",
-  });
+  })
+    : (
+      steps = await Steps.find({
+        Machine: req.params.machineId,
+      }).populate({
+        path: "Machine",
+        select: "name description",
+      })
+    )
+
   // const steps = await Steps.findById(req.params.machineId).populate({
   //   path: "Machine",
   //   select: "name description",
