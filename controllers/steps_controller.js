@@ -83,7 +83,7 @@ module.exports.editStep = async (req, res, next) => {
     })
     console.log('Steps updated', step2)
     return res.status(200).json({
-      message: 'Steps Updated successfully',
+      message: 'Task Updated Successfully',
       success: true,
       data: req.body
     });
