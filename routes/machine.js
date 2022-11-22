@@ -13,5 +13,6 @@ router.put(
   machineController.editMachine
 );
 router.delete("/deleteMachine/:id", machineController.deleteMachines);
+router.delete("/deleteMultiple", machineController.deleteMultiple);
 
 module.exports = router;

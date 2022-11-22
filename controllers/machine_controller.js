@@ -93,3 +93,23 @@ module.exports.deleteMachines = async function (req, res) {
     });
   }
 };
+
+module.exports.deleteMultiple = async function (req, res) {
+  console.log("Multi delete api callesd", req.body)
+  const machinesToBeDeleted = req.body;
+  console.log('Req body', machinesToBeDeleted)
+  try {
+    machinesToBeDeleted.map(async (machine) => await Machine.findByIdAndDelete(machine));
+    return res.status(200).json({
+      message: 'Machines Deleted Successfully',
+      success: true,
+    });
+
+  } catch (err) {
+    console.log(err)
+    return res.status(404).json({
+      message: err,
+      success: false,
+    });
+  }
+};
